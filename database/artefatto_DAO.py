@@ -11,3 +11,25 @@ class ArtefattoDAO:
         pass
 
     # TODO
+
+    @staticmethod
+    def read_all_artefatti():
+        results = []
+        cnx = ConnessioneDB.get_connection()
+        if cnx is None:
+            print("Connessione fallita")
+            return None
+        else:
+            cursor = cnx.cursor(dictionary=True)
+            query = """SELECT *
+                        FROM artefatto """
+
+            cursor.execute(query)
+            for row in cursor:
+                # Posso creare oggetti di tipo Artefatto
+                artefatti = Artefatto(row["id"], row["nome"], row["tipologia"], row["epoca"], row["id_museo"])
+                results.append(artefatti)
+            cursor.close()
+            cnx.close()
+            return results
+
